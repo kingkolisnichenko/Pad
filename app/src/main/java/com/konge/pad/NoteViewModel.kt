@@ -19,12 +19,11 @@ constructor(
     var note by mutableStateOf(Note(0, "", "", false))
         private set
 
-    var openDialog by mutableStateOf(false)
-
     val notes = repo.getNotesFromRoom()
 
     fun getNote(id: Int) = viewModelScope.launch {
-        note = repo.getNoteFromRoom(id)
+        var finded = repo.getNoteFromRoom(id)
+        if (finded != null) note = finded
     }
 
     fun addNote(note: Note) = viewModelScope.launch {
@@ -38,4 +37,23 @@ constructor(
     fun deleteNote(note: Note) = viewModelScope.launch {
         repo.deleteNoteFromRoom(note)
     }
+
+    fun updateTitle(title: String){
+        note = note.copy(
+            title = title
+        )
+    }
+
+    fun updateContent(content: String){
+        note = note.copy(
+            content = content
+        )
+    }
+
+    fun updateArchive(inArchive: Boolean){
+        note = note.copy(
+            inArchive = inArchive
+        )
+    }
+
 }

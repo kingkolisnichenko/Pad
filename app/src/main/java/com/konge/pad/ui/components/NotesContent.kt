@@ -14,12 +14,13 @@ import com.konge.pad.data.domain.Notes
 @ExperimentalMaterial3Api
 @Composable
 fun NotesContent(
+    padding: PaddingValues,
     notes: Notes,
     deleteNote: (note: Note) -> Unit,
     navigateToUpdateNoteScreen: (noteId: Int) -> Unit
 ) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize().padding(padding)
     ) {
         items(
             items = notes
