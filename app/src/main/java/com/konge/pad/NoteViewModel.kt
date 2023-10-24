@@ -20,6 +20,7 @@ constructor(
         private set
 
     val notes = repo.getNotesFromRoom()
+    val archiveNotes = repo.getArchiveNotesFromRoom()
 
     fun getNote(id: Int) = viewModelScope.launch {
         var finded = repo.getNoteFromRoom(id)

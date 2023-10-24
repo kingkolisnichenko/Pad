@@ -9,6 +9,7 @@ class NoteRepositoryImpl(
     private val noteDao: NoteDao
 ) : NoteRepository{
     override fun getNotesFromRoom() = noteDao.getNotes()
+    override fun getArchiveNotesFromRoom() = noteDao.getArchiveNotes()
 
     override suspend fun getNoteFromRoom(id: Int) = noteDao.getNote(id)
 

@@ -27,35 +27,22 @@ import com.konge.pad.ui.theme.Typography
 @ExperimentalMaterial3Api
 @Composable
 fun ArchiveScreen(viewModel: NoteViewModel = hiltViewModel(),
-                  navigateToUpdateNoteScreen: (bookId: Int) -> Unit,
-                  onClickNewNote: () -> Unit
+                  navigateToUpdateNoteScreen: (bookId: Int) -> Unit
 ) {
-    val notes by viewModel.notes.collectAsState(
+    val archiveNotes by viewModel.archiveNotes.collectAsState(
         initial = emptyList()
     )
 
     Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(
-                modifier = Modifier
-                    .padding(all = 8.dp),
-                onClick = {
-                    onClickNewNote()
-                },
-
-                ) {
-                Icon(Icons.Filled.Add, "Add")
-            }
-        },
         content = { padding ->
             NotesContent(
                 padding = padding,
-                notes = notes,
+                notes = archiveNotes,
                 deleteNote = { note ->
                     viewModel.deleteNote(note)
                 },
                 archiveNote = { note ->
-                    viewModel.updateNote(note.copy(inArchive = true))
+                    viewModel.updateNote(note.copy(inArchive = false))
                 },
                 navigateToUpdateNoteScreen = navigateToUpdateNoteScreen
             )

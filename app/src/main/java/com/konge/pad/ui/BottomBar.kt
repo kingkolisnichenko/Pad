@@ -21,7 +21,6 @@ import com.konge.pad.Destinations
 @Composable
 fun BottomBar(
     navController: NavHostController,
-    state: MutableState<Boolean>,
     modifier: Modifier = Modifier)
 {
     val screens = listOf(

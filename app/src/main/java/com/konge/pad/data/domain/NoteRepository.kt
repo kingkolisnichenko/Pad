@@ -7,6 +7,8 @@ typealias Notes = List<Note>
 interface NoteRepository {
     fun getNotesFromRoom(): Flow<Notes>
 
+    fun getArchiveNotesFromRoom(): Flow<Notes>
+
     suspend fun getNoteFromRoom(id: Int): Note
 
     suspend fun addNoteToRoom(note: Note)

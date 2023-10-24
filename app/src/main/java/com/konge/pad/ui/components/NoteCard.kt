@@ -64,9 +64,15 @@ fun NoteCard(
             DeleteIcon(
                 deleteNote = deleteNote
             )
-            ArchiveIcon (
-                archiveNote = archiveNote
-            )
+            if (!note.inArchive) {
+                ArchiveIcon(
+                    archiveNote = archiveNote
+                )
+            } else {
+                unArchiveIcon(
+                    archiveNote = archiveNote
+                )
+            }
         }
     }
 }
