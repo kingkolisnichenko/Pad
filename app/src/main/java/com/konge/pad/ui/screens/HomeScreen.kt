@@ -42,7 +42,7 @@ fun HomeScreen(
         initial = emptyList()
     )
 
-    Scaffold (
+    Scaffold(
         floatingActionButton = {
             FloatingActionButton(
                 modifier = Modifier
@@ -55,12 +55,15 @@ fun HomeScreen(
                 Icon(Icons.Filled.Add, "Add")
             }
         },
-        content = {padding ->
+        content = { padding ->
             NotesContent(
                 padding = padding,
                 notes = notes,
                 deleteNote = { note ->
                     viewModel.deleteNote(note)
+                },
+                archiveNote = { note ->
+                    viewModel.updateNote(note.copy(inArchive = true))
                 },
                 navigateToUpdateNoteScreen = navigateToUpdateNoteScreen
             )

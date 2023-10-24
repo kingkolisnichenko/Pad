@@ -17,6 +17,7 @@ fun NotesContent(
     padding: PaddingValues,
     notes: Notes,
     deleteNote: (note: Note) -> Unit,
+    archiveNote: (note: Note) -> Unit,
     navigateToUpdateNoteScreen: (noteId: Int) -> Unit
 ) {
     LazyColumn(
@@ -29,6 +30,9 @@ fun NotesContent(
                 note = note,
                 deleteNote = {
                     deleteNote(note)
+                },
+                archiveNote = {
+                    archiveNote(note)
                 },
                 navigateToUpdateNoteScreen = navigateToUpdateNoteScreen
             )

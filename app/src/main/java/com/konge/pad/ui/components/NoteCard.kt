@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.konge.pad.data.Note
@@ -20,6 +21,7 @@ import com.konge.pad.ui.theme.Typography
 fun NoteCard(
     note: Note,
     deleteNote: () -> Unit,
+    archiveNote: () -> Unit,
     navigateToUpdateNoteScreen: (bookId: Int) -> Unit
 ) {
     Card(
@@ -41,16 +43,19 @@ fun NoteCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.Bottom,
         ) {
             Column {
-                Text(
-                    text = note.title,
-                    style = typography.titleLarge
-                )
+                if (note.title.isNotEmpty()) {
+                    Text(
+                        text = note.title,
+                        style = typography.headlineMedium,
+                        fontWeight = FontWeight(500)
+                    )
+                }
                 Text(
                     text = note.content,
-                    style = typography.bodyMedium
+                    style = typography.bodyLarge
                 )
             }
             Spacer(
@@ -58,6 +63,9 @@ fun NoteCard(
             )
             DeleteIcon(
                 deleteNote = deleteNote
+            )
+            ArchiveIcon (
+                archiveNote = archiveNote
             )
         }
     }
