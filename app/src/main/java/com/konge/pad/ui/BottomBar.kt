@@ -1,5 +1,11 @@
 package com.konge.pad.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Home
@@ -21,42 +27,59 @@ import com.konge.pad.Destinations
 @Composable
 fun BottomBar(
     navController: NavHostController,
-    modifier: Modifier = Modifier)
-{
+    state: MutableState<Boolean>,
+    modifier: Modifier = Modifier
+) {
     val screens = listOf(
         Destinations.Archive, Destinations.Home, Destinations.Settings
     )
-
-    NavigationBar(
-        modifier = modifier
-    ) {
-
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
-
-        screens.forEach{screen ->
-
-            var selected = currentRoute == screen.route
-
-            NavigationBarItem(
-                label = {
-                    Text(text = screen.title!!)
-                },
-                icon = {
-                    Icon(imageVector = if (selected) screen.selectedIcon!! else screen.icon!!, contentDescription = "")
-                },
-                selected = selected,
-                onClick = {
-                    navController.navigate(screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
+    AnimatedVisibility(
+        visible = state.value,
+        enter = slideInVertically(
+            initialOffsetY = { it }, animationSpec = tween(
+                durationMillis = 150
             )
-        }
+        ),
+        exit = slideOutVertically(
+            targetOffsetY = { it }, animationSpec = tween(
+                durationMillis = 150
+            )
+        ),
+        content = {
+            NavigationBar(
+                modifier = modifier
+            ) {
 
-    }
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+
+                screens.forEach { screen ->
+
+                    var selected = currentRoute == screen.route
+
+                    NavigationBarItem(
+                        label = {
+                            Text(text = screen.title!!)
+                        },
+                        icon = {
+                            Icon(
+                                imageVector = if (selected) screen.selectedIcon!! else screen.icon!!,
+                                contentDescription = ""
+                            )
+                        },
+                        selected = selected,
+                        onClick = {
+                            navController.navigate(screen.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
+                    )
+                }
+
+            }
+        })
 }
