@@ -1,16 +1,10 @@
 package com.konge.pad.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.EaseIn
-import androidx.compose.animation.core.EaseOut
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -27,22 +21,22 @@ import com.konge.pad.ui.screens.UpdateNoteScreen
 
 @ExperimentalMaterial3Api
 @Composable
-fun NavigationGraph(navController: NavHostController, state: MutableState<Boolean>) {
+fun NavigationGraph(navController: NavHostController, drawerState: DrawerState) {
+
+    val animationDuration = 500
 
     NavHost(navController, startDestination = Destinations.Home.route) {
 
         composable(Screen.HomeScreen.route) {
-            LaunchedEffect(Unit) {
-                state.value = true
-            }
+
             HomeScreen(
+                drawerState = drawerState,
                 navigateToUpdateNoteScreen = { noteId ->
                     navController.navigate(
                         route = "${Screen.UpdateNoteScreen.route}/${noteId}"
                     )
                 },
                 onClickNewNote = {
-                    //state.value = !state.value
                     navController.navigate(
                         route = Screen.AddNoteScreen.route
                     )
@@ -50,49 +44,52 @@ fun NavigationGraph(navController: NavHostController, state: MutableState<Boolea
         }
 
         composable(Screen.ArchiveScreen.route) {
-            ArchiveScreen(navigateToUpdateNoteScreen = { noteId ->
-                navController.navigate(
-                    route = "${Screen.UpdateNoteScreen.route}/${noteId}"
-                )
-            })
+            ArchiveScreen(
+                drawerState = drawerState,
+                navigateToUpdateNoteScreen = { noteId ->
+                    navController.navigate(
+                        route = "${Screen.UpdateNoteScreen.route}/${noteId}"
+                    )
+                })
         }
+
         composable(Screen.SettingsScreen.route) {
-            SettingsScreen()
+            SettingsScreen(
+                drawerState = drawerState
+            )
         }
+
         composable(
             route = "${Screen.UpdateNoteScreen.route}/{$NOTE_ID}",
             arguments = listOf(navArgument(NOTE_ID) {
                 type = NavType.IntType
             }),
-//            enterTransition = {
-//                slideIntoContainer(
-//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-//                    animationSpec = tween(500)
-//                )
-//            },
-//            exitTransition = {
-//                slideOutOfContainer(
-//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-//                    animationSpec = tween(500)
-//                )
-//            },
-//            popEnterTransition = {
-//                slideIntoContainer(
-//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-//                    animationSpec = tween(500)
-//                )
-//            },
-//            popExitTransition = {
-//                slideOutOfContainer(
-//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-//                    animationSpec = tween(500)
-//                )
-//            }
+            enterTransition = {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                    animationSpec = tween(animationDuration)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                    animationSpec = tween(animationDuration)
+                )
+            },
+            popEnterTransition = {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                    animationSpec = tween(animationDuration)
+                )
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                    animationSpec = tween(animationDuration)
+                )
+            }
         )
         {
-            LaunchedEffect(Unit) {
-                state.value = false
-            }
             UpdateNoteScreen(
                 noteId = it.arguments?.getInt(
                     "noteId"
@@ -105,30 +102,30 @@ fun NavigationGraph(navController: NavHostController, state: MutableState<Boolea
 
         composable(
             Screen.AddNoteScreen.route,
-//            enterTransition = {
-//                slideIntoContainer(
-//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-//                    animationSpec = tween(700)
-//                )
-//            },
-//            exitTransition = {
-//                slideOutOfContainer(
-//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-//                    animationSpec = tween(700)
-//                )
-//            },
-//            popEnterTransition = {
-//                slideIntoContainer(
-//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-//                    animationSpec = tween(700)
-//                )
-//            },
-//            popExitTransition = {
-//                slideOutOfContainer(
-//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-//                    animationSpec = tween(700)
-//                )
-//            }
+            enterTransition = {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                    animationSpec = tween(animationDuration)
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+                    animationSpec = tween(animationDuration)
+                )
+            },
+            popEnterTransition = {
+                slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                    animationSpec = tween(animationDuration)
+                )
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+                    animationSpec = tween(animationDuration)
+                )
+            }
         ) {
             AddNoteScreen(navigateBack = {
                 navController.popBackStack()

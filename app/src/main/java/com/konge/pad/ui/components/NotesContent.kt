@@ -31,6 +31,7 @@ fun NotesContent(
 ) {
     LazyColumn(
         modifier = Modifier
+            .padding(padding)
             .fillMaxSize()
     ) {
         items(

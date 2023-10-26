@@ -11,9 +11,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class Destinations(
     val route: String,
-    val title: String? = null,
-    val icon: ImageVector? = null,
-    val selectedIcon: ImageVector? = null,
+    val title: String,
+    val icon: ImageVector,
+    val selectedIcon: ImageVector,
 
 ){
     object Archive : Destinations(
