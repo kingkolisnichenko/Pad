@@ -32,7 +32,9 @@ fun NavigationGraph(navController: NavHostController, state: MutableState<Boolea
     NavHost(navController, startDestination = Destinations.Home.route) {
 
         composable(Screen.HomeScreen.route) {
-
+            LaunchedEffect(Unit) {
+                state.value = true
+            }
             HomeScreen(
                 navigateToUpdateNoteScreen = { noteId ->
                     navController.navigate(
@@ -40,6 +42,7 @@ fun NavigationGraph(navController: NavHostController, state: MutableState<Boolea
                     )
                 },
                 onClickNewNote = {
+                    //state.value = !state.value
                     navController.navigate(
                         route = Screen.AddNoteScreen.route
                     )
@@ -61,32 +64,35 @@ fun NavigationGraph(navController: NavHostController, state: MutableState<Boolea
             arguments = listOf(navArgument(NOTE_ID) {
                 type = NavType.IntType
             }),
-            enterTransition = {
-                slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                    animationSpec = tween(200)
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                    animationSpec = tween(200)
-                )
-            },
-            popEnterTransition = {
-                slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                    animationSpec = tween(200)
-                )
-            },
-            popExitTransition = {
-                slideOutOfContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                    animationSpec = tween(200)
-                )
-            }
+//            enterTransition = {
+//                slideIntoContainer(
+//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+//                    animationSpec = tween(500)
+//                )
+//            },
+//            exitTransition = {
+//                slideOutOfContainer(
+//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+//                    animationSpec = tween(500)
+//                )
+//            },
+//            popEnterTransition = {
+//                slideIntoContainer(
+//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+//                    animationSpec = tween(500)
+//                )
+//            },
+//            popExitTransition = {
+//                slideOutOfContainer(
+//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+//                    animationSpec = tween(500)
+//                )
+//            }
         )
         {
+            LaunchedEffect(Unit) {
+                state.value = false
+            }
             UpdateNoteScreen(
                 noteId = it.arguments?.getInt(
                     "noteId"
@@ -99,30 +105,30 @@ fun NavigationGraph(navController: NavHostController, state: MutableState<Boolea
 
         composable(
             Screen.AddNoteScreen.route,
-            enterTransition = {
-                slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                    animationSpec = tween(700)
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                    animationSpec = tween(700)
-                )
-            },
-            popEnterTransition = {
-                slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                    animationSpec = tween(700)
-                )
-            },
-            popExitTransition = {
-                slideOutOfContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                    animationSpec = tween(700)
-                )
-            }
+//            enterTransition = {
+//                slideIntoContainer(
+//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+//                    animationSpec = tween(700)
+//                )
+//            },
+//            exitTransition = {
+//                slideOutOfContainer(
+//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
+//                    animationSpec = tween(700)
+//                )
+//            },
+//            popEnterTransition = {
+//                slideIntoContainer(
+//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+//                    animationSpec = tween(700)
+//                )
+//            },
+//            popExitTransition = {
+//                slideOutOfContainer(
+//                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
+//                    animationSpec = tween(700)
+//                )
+//            }
         ) {
             AddNoteScreen(navigateBack = {
                 navController.popBackStack()

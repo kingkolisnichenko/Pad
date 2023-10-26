@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -24,6 +25,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.konge.pad.Destinations
 
+@ExperimentalMaterial3Api
 @Composable
 fun BottomBar(
     navController: NavHostController,
@@ -33,53 +35,39 @@ fun BottomBar(
     val screens = listOf(
         Destinations.Archive, Destinations.Home, Destinations.Settings
     )
-    AnimatedVisibility(
-        visible = state.value,
-        enter = slideInVertically(
-            initialOffsetY = { it }, animationSpec = tween(
-                durationMillis = 150
-            )
-        ),
-        exit = slideOutVertically(
-            targetOffsetY = { it }, animationSpec = tween(
-                durationMillis = 150
-            )
-        ),
-        content = {
-            NavigationBar(
-                modifier = modifier
-            ) {
+    NavigationBar(
+        modifier = modifier
+    ) {
 
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
 
-                screens.forEach { screen ->
+        screens.forEach { screen ->
 
-                    var selected = currentRoute == screen.route
+            var selected = currentRoute == screen.route
 
-                    NavigationBarItem(
-                        label = {
-                            Text(text = screen.title!!)
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = if (selected) screen.selectedIcon!! else screen.icon!!,
-                                contentDescription = ""
-                            )
-                        },
-                        selected = selected,
-                        onClick = {
-                            navController.navigate(screen.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
+            NavigationBarItem(
+                label = {
+                    Text(text = screen.title!!)
+                },
+                icon = {
+                    Icon(
+                        imageVector = if (selected) screen.selectedIcon!! else screen.icon!!,
+                        contentDescription = ""
                     )
+                },
+                selected = selected,
+                onClick = {
+                    navController.navigate(screen.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
+            )
+        }
 
-            }
-        })
+    }
 }
