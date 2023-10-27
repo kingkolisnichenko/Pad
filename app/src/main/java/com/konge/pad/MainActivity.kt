@@ -9,8 +9,11 @@ import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.konge.pad.navigation.NavigationGraph
 import com.konge.pad.ui.AppDrawerContent
@@ -28,8 +31,8 @@ class MainActivity : ComponentActivity() {
 
             val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
             val navController: NavHostController = rememberNavController()
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
             val coroutineScope = rememberCoroutineScope()
-            //val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
 
             PadTheme {
 
@@ -38,44 +41,27 @@ class MainActivity : ComponentActivity() {
                         drawerState = drawerState,
                         drawerContent = {
                             ModalDrawerSheet {
-                                AppDrawerContent{ route ->
+                                AppDrawerContent(
+                                    currentRoute = navBackStackEntry?.destination?.route
+                                        ?: ""
+                                ) { route ->
                                     coroutineScope.launch {
                                         drawerState.close()
                                     }
 
-                                    navController.navigate(route)
+                                    navController.navigate(route) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
                                 }
                             }
                         }) {
                         NavigationGraph(navController = navController, drawerState = drawerState)
                     }
                 }
-
-
-//                val navBackStackEntry by navController.currentBackStackEntryAsState()
-//
-//                bottomBarState.value = when (navBackStackEntry?.destination?.route) {
-//                    Screen.AddNoteScreen.route -> false
-//                    "${Screen.UpdateNoteScreen.route}/{${Constants.NOTE_ID}}" -> false
-//                    else -> true
-//                }
-//
-//                Scaffold(
-//                    bottomBar = {
-//                        BottomBar(
-//                            navController = navController,
-//                            state = bottomBarState,
-//                            modifier = Modifier
-//                        )
-//                    },
-//                    content = { paddingValues ->
-//                        Column(
-//                            modifier = Modifier.padding(paddingValues)
-//                        ) {
-//                            NavigationGraph(navController = navController, state = bottomBarState)
-//                        }
-//                    }
-//                )
             }
         }
     }

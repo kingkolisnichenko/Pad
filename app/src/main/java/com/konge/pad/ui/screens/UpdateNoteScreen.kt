@@ -1,5 +1,6 @@
 package com.konge.pad.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.konge.pad.NoteViewModel
@@ -37,6 +40,11 @@ fun UpdateNoteScreen(
 ) {
     LaunchedEffect(Unit) {
         viewModel.getNote(noteId)
+    }
+
+    BackHandler {
+        viewModel.updateNote(viewModel.note)
+        navigateBack()
     }
 
     Scaffold(
@@ -73,7 +81,8 @@ fun UpdateNoteScreen(
                         )
                     },
                     singleLine = true,
-                    textStyle = typography.headlineMedium
+                    textStyle = typography.headlineMedium,
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
                 )
                 Spacer(
                     modifier = Modifier.height(8.dp)
@@ -96,7 +105,8 @@ fun UpdateNoteScreen(
                             text = "Your note ..."
                         )
                     },
-                    textStyle = typography.bodyLarge
+                    textStyle = typography.bodyLarge,
+                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences)
                 )
 
             }
