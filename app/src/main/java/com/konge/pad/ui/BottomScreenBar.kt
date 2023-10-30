@@ -13,12 +13,12 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 @OptIn(ExperimentalComposeUiApi::class)
 @ExperimentalMaterial3Api
 @Composable
-fun BottomScreenBar(){
+fun BottomScreenBar(onClickChangeColor: () -> Unit) {
 
     BottomAppBar(
         actions = {
             IconButton(onClick = {
-
+                onClickChangeColor()
             }) {
                 Icon(Icons.Filled.ColorLens, contentDescription = "Change color")
             }
