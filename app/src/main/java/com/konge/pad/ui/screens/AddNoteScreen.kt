@@ -10,14 +10,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -57,6 +60,7 @@ fun AddNoteScreen(
     var content by rememberSaveable { mutableStateOf("") }
     var color by remember { mutableIntStateOf(LightWhite.toArgb()) }
     var showBottomSheet by remember { mutableStateOf(false) }
+    val modalBottomSheetState = rememberModalBottomSheetState()
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
@@ -141,8 +145,17 @@ fun AddNoteScreen(
                 )
             }
 
-            if (showBottomSheet) {
+            /*TODO Переделать это*/
 
+            if (showBottomSheet) {
+                ModalBottomSheet(
+                    modifier = Modifier.height(200.dp),
+                    onDismissRequest = { showBottomSheet = false },
+                    sheetState = modalBottomSheetState,
+                    dragHandle = { BottomSheetDefaults.DragHandle() },
+                ) {
+                    Text(text = "Bottom sheet")
+                }
             }
 
         }
