@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.BottomSheetDefaults
@@ -152,9 +154,15 @@ fun AddNoteScreen(
                     modifier = Modifier.height(200.dp),
                     onDismissRequest = { showBottomSheet = false },
                     sheetState = modalBottomSheetState,
-                    dragHandle = { BottomSheetDefaults.DragHandle() },
+                    dragHandle = null,
                 ) {
-                    Text(text = "Bottom sheet")
+                    
+                    LazyRow(){
+                        items(Note.noteColors){
+
+                        }
+                    }
+                    
                 }
             }
 
