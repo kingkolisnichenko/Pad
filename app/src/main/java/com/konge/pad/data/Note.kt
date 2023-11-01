@@ -17,7 +17,7 @@ data class Note(
     val title: String,
     val content: String,
     val inArchive: Boolean,
-    val color: Int = LightWhite.toArgb()
+    val color: Int
 ) {
     companion object {
         val noteColors = listOf(LightWhite, RedOrange, RedPink, BabyBlue, Violet, LightGreen)

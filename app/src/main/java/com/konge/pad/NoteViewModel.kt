@@ -3,6 +3,8 @@ package com.konge.pad
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.konge.pad.data.Note
@@ -16,7 +18,7 @@ class NoteViewModel @Inject
 constructor(
     private val repo: NoteRepository
 ) : ViewModel() {
-    var note by mutableStateOf(Note(0, "", "", false))
+    var note by mutableStateOf(Note(0, "", "", false, Color.White.toArgb()))
         private set
 
     val notes = repo.getNotesFromRoom()
