@@ -127,6 +127,7 @@ fun NavigationGraph(navController: NavHostController, drawerState: DrawerState) 
                 )
             }
         ) {
+
             AddNoteScreen(navigateBack = {
                 navController.popBackStack()
             })

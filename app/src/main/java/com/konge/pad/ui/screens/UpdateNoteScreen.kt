@@ -22,8 +22,11 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -49,7 +52,7 @@ fun UpdateNoteScreen(
 
     Scaffold(
         topBar = {
-            PadTopBar {
+            PadTopBar(color = viewModel.note.color) {
                 viewModel.updateNote(viewModel.note)
                 navigateBack()
             }

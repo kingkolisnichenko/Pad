@@ -1,6 +1,7 @@
 package com.konge.pad.ui.screens
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -21,6 +23,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -65,6 +68,7 @@ fun AddNoteScreen(
     var title by rememberSaveable { mutableStateOf("") }
     var content by rememberSaveable { mutableStateOf("") }
     var color by rememberSaveable { mutableIntStateOf(LightWhite.toArgb()) }
+
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val modalBottomSheetState = rememberModalBottomSheetState()
 
@@ -85,7 +89,7 @@ fun AddNoteScreen(
     Scaffold(
 
         topBar = {
-            PadTopBar {
+            PadTopBar(color = color) {
                 if (title.isNotEmpty() or content.isNotEmpty())
                     viewModel.addNote(Note(0, title, content, false, color))
                 navigateBack()
@@ -104,6 +108,7 @@ fun AddNoteScreen(
                     .background(Color(color))
                     .fillMaxSize()
                     .padding(padding)
+                    .imePadding()
             ) {
 
                 TextField(
@@ -112,9 +117,8 @@ fun AddNoteScreen(
                     colors = TextFieldDefaults.textFieldColors(
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
-                        containerColor = Color(color)
+                        containerColor = Color.Transparent
                     ),
-                    shape = RoundedCornerShape(8.dp),
                     value = title,
                     onValueChange = { title = it },
                     placeholder = { Text("Title") },
@@ -139,7 +143,7 @@ fun AddNoteScreen(
                     colors = TextFieldDefaults.textFieldColors(
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
-                        containerColor = Color(color)
+                        containerColor = Color.Transparent
                     ),
                     value = content,
                     onValueChange = { content = it },
@@ -150,13 +154,14 @@ fun AddNoteScreen(
                         capitalization = KeyboardCapitalization.Sentences
                     )
                 )
+
             }
 
             /*TODO Переделать это*/
 
             if (showBottomSheet) {
                 ModalBottomSheet(
-                    modifier = Modifier.height(200.dp),
+                    modifier = Modifier.height(170.dp),
                     onDismissRequest = { showBottomSheet = false },
                     sheetState = modalBottomSheetState,
                     dragHandle = null,
@@ -164,11 +169,12 @@ fun AddNoteScreen(
 
                     LazyRow() {
                         items(Note.noteColors) { item ->
-                            Card(
+                            OutlinedCard(
                                 modifier = Modifier
                                     .size(100.dp)
                                     .padding(all = 14.dp),
-                                shape = RoundedCornerShape(size = 20.dp)
+                                shape = RoundedCornerShape(size = 25.dp),
+                                border = BorderStroke(1.dp, Color.Black)
                             ) {
 
                                 Box(

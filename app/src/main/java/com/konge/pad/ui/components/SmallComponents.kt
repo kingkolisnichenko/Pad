@@ -11,17 +11,31 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.core.graphics.ColorUtils
 import com.konge.pad.Destinations
 
 @ExperimentalMaterial3Api
 @Composable
 fun PadTopBar(
     title: String = "",
+    color: Int,
     onCLickBack: () -> Unit
 ) {
     TopAppBar(
         title = { Text(text = title) },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color(
+                ColorUtils.blendARGB(
+                    color,
+                    0x000000,
+                    0.2f
+                )
+            )
+        ),
         navigationIcon = {
             IconButton(onClick = { onCLickBack() }) {
                 Icon(
