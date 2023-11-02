@@ -30,7 +30,8 @@ constructor(
     }
 
     fun addNote(note: Note) = viewModelScope.launch {
-        repo.addNoteToRoom(note)
+        if (note.title.isNotEmpty() or note.content.isNotEmpty())
+            repo.addNoteToRoom(note)
     }
 
     fun updateNote(note: Note) = viewModelScope.launch {
@@ -41,19 +42,19 @@ constructor(
         repo.deleteNoteFromRoom(note)
     }
 
-    fun updateTitle(title: String){
+    fun updateTitle(title: String) {
         note = note.copy(
             title = title
         )
     }
 
-    fun updateContent(content: String){
+    fun updateContent(content: String) {
         note = note.copy(
             content = content
         )
     }
 
-    fun updateArchive(inArchive: Boolean){
+    fun updateArchive(inArchive: Boolean) {
         note = note.copy(
             inArchive = inArchive
         )
