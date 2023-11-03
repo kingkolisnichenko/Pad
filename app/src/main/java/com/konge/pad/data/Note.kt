@@ -1,5 +1,6 @@
 package com.konge.pad.data
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.room.Entity
@@ -21,6 +22,6 @@ data class Note(
     val color: Int
 ) {
     companion object {
-        val noteColors = listOf(LightWhite, RedOrange, RedPink, BabyBlue, Violet, LightGreen, Color.White)
+        val noteColors =  listOf(Color.White, LightWhite, RedOrange, RedPink, BabyBlue, Violet, LightGreen)
     }
 }

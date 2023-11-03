@@ -41,13 +41,12 @@ import com.konge.pad.data.Note
 @Composable
 fun PadTopBar(
     title: String = "",
-    containerColor: Color,
     onCLickBack: () -> Unit
 ) {
     TopAppBar(
         title = { Text(text = title) },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = containerColor
+            containerColor = Color.Transparent
 //            containerColor = Color(
 //                ColorUtils.blendARGB(
 //                    containerColor.toArgb(),
@@ -69,11 +68,11 @@ fun PadTopBar(
 
 @ExperimentalMaterial3Api
 @Composable
-fun PadBottomBar(containerColor: Color, onClickChangeColor: () -> Unit) {
+fun PadBottomBar(onClickChangeColor: () -> Unit) {
 
     BottomAppBar(
         modifier = Modifier.height(50.dp),
-        containerColor = containerColor,
+        containerColor = Color.Transparent,
 //        containerColor = Color(
 //            ColorUtils.blendARGB(
 //                containerColor.toArgb(),

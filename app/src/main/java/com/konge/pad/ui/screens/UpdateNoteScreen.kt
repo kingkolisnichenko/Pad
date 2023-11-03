@@ -24,19 +24,27 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.konge.pad.NoteViewModel
 import com.konge.pad.data.Note
+import com.konge.pad.ui.components.PadBottomBar
+import com.konge.pad.ui.components.PadBottomSheet
 import com.konge.pad.ui.components.PadTopBar
 
 @ExperimentalMaterial3Api
@@ -47,24 +55,36 @@ fun UpdateNoteScreen(
     navigateBack: () -> Unit
 ) {
 
+    val keyboard = LocalSoftwareKeyboardController.current
+
     LaunchedEffect(Unit) {
         viewModel.getNote(noteId)
     }
 
     BackHandler {
+        keyboard?.hide()
         viewModel.updateNote(viewModel.note)
         navigateBack()
     }
 
+    var showBottomSheet by rememberSaveable { mutableStateOf(false) }
+    val modalBottomSheetState = rememberModalBottomSheetState()
+
     Scaffold(
+        containerColor = Color(viewModel.note.color),
         topBar = {
-            PadTopBar(containerColor = Color(viewModel.note.color)) {
+            PadTopBar{
+                keyboard?.hide()
                 viewModel.updateNote(viewModel.note)
                 navigateBack()
             }
         },
+        bottomBar = {
+            PadBottomBar {
+                showBottomSheet = true
+            }
+        },
         content = { padding ->
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -74,12 +94,13 @@ fun UpdateNoteScreen(
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    colors = TextFieldDefaults.textFieldColors(
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
-                        containerColor = MaterialTheme.colorScheme.background
                     ),
-                    shape = RoundedCornerShape(8.dp),
                     value = viewModel.note.title,
                     onValueChange = {
                         viewModel.updateTitle(it)
@@ -100,10 +121,12 @@ fun UpdateNoteScreen(
                 TextField(
                     modifier = Modifier
                         .fillMaxSize(),
-                    colors = TextFieldDefaults.textFieldColors(
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
-                        containerColor = MaterialTheme.colorScheme.background
                     ),
                     value = viewModel.note.content,
                     onValueChange = {
@@ -119,6 +142,17 @@ fun UpdateNoteScreen(
                 )
 
             }
+
+            PadBottomSheet(
+                show = showBottomSheet,
+                state = modalBottomSheetState,
+                containerColor = Color(viewModel.note.color),
+                onDismiss = {
+                    showBottomSheet = false
+                },
+                onClick = {
+                    viewModel.updateColor(it)
+                })
 
         }
     )

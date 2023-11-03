@@ -53,7 +53,7 @@ fun AddNoteScreen(
 
     var _noteTitle by rememberSaveable { mutableStateOf("") }
     var _noteContent by rememberSaveable { mutableStateOf("") }
-    var _noteColor by remember { mutableStateOf(LightWhite) }
+    var _noteColor by remember { mutableStateOf(Color.White) }
 
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val modalBottomSheetState = rememberModalBottomSheetState()
@@ -77,18 +77,16 @@ fun AddNoteScreen(
             .imePadding(),
         containerColor = _noteColor,
         topBar = {
-            PadTopBar(containerColor = _noteColor) {
+            PadTopBar {
                 keyboard?.hide()
                 viewModel.addNote(Note(0, _noteTitle, _noteContent, false, _noteColor.toArgb()))
                 navigateBack()
             }
         },
         bottomBar = {
-            PadBottomBar(
-                containerColor = _noteColor,
-                onClickChangeColor = {
-                    showBottomSheet = true
-                })
+            PadBottomBar {
+                showBottomSheet = true
+            }
         },
 
         content = { padding ->
@@ -156,7 +154,8 @@ fun AddNoteScreen(
                 containerColor = _noteColor,
                 onDismiss = {
                     showBottomSheet = false
-                    focusRequester.requestFocus() },
+                    focusRequester.requestFocus()
+                },
                 onClick = {
                     _noteColor = it
                 })
