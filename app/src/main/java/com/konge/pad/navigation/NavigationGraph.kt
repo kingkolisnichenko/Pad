@@ -69,7 +69,7 @@ fun NavigationGraph(navController: NavHostController, drawerState: DrawerState) 
                 type = NavType.IntType
             }),
             enterTransition = {
-                scaleIn(initialScale = 0f)
+                scaleIn()
             },
             exitTransition = {
                 scaleOut()

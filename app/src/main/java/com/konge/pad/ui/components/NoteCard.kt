@@ -31,7 +31,6 @@ fun NoteCard(
     OutlinedCard(
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
-            .shadow(1.dp)
             .padding(
                 start = 8.dp,
                 end = 8.dp,
