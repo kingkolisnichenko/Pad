@@ -1,7 +1,6 @@
 package com.konge.pad.ui.screens
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +19,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -53,9 +51,9 @@ fun AddNoteScreen(
     val focusRequester = remember { FocusRequester() }
     val keyboard = LocalSoftwareKeyboardController.current
 
-    var title by rememberSaveable { mutableStateOf("") }
-    var content by rememberSaveable { mutableStateOf("") }
-    var color by rememberSaveable { mutableIntStateOf(LightWhite.toArgb()) }
+    var _noteTitle by rememberSaveable { mutableStateOf("") }
+    var _noteContent by rememberSaveable { mutableStateOf("") }
+    var _noteColor by remember { mutableStateOf(LightWhite) }
 
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val modalBottomSheetState = rememberModalBottomSheetState()
@@ -68,22 +66,26 @@ fun AddNoteScreen(
         if (showBottomSheet) {
             showBottomSheet = false
         } else {
-            viewModel.addNote(Note(0, title, content, false, color))
+            keyboard?.hide()
+            viewModel.addNote(Note(0, _noteTitle, _noteContent, false, _noteColor.toArgb()))
             navigateBack()
         }
     }
 
     Scaffold(
-
+        modifier = Modifier
+            .imePadding(),
+        containerColor = _noteColor,
         topBar = {
-            PadTopBar(color = color) {
-                viewModel.addNote(Note(0, title, content, false, color))
+            PadTopBar(containerColor = _noteColor) {
+                keyboard?.hide()
+                viewModel.addNote(Note(0, _noteTitle, _noteContent, false, _noteColor.toArgb()))
                 navigateBack()
             }
         },
         bottomBar = {
             PadBottomBar(
-                color = color,
+                containerColor = _noteColor,
                 onClickChangeColor = {
                     showBottomSheet = true
                 })
@@ -93,7 +95,6 @@ fun AddNoteScreen(
 
             Column(
                 modifier = Modifier
-                    .background(Color(color))
                     .fillMaxSize()
                     .padding(padding)
                     .imePadding()
@@ -102,13 +103,15 @@ fun AddNoteScreen(
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    colors = TextFieldDefaults.textFieldColors(
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
-                        containerColor = Color.Transparent
                     ),
-                    value = title,
-                    onValueChange = { title = it },
+                    value = _noteTitle,
+                    onValueChange = { _noteTitle = it },
                     placeholder = { Text("Title") },
                     singleLine = true,
                     textStyle = typography.headlineMedium,
@@ -128,13 +131,15 @@ fun AddNoteScreen(
                             }
                         }
                         .fillMaxSize(),
-                    colors = TextFieldDefaults.textFieldColors(
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        disabledContainerColor = Color.Transparent,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
-                        containerColor = Color.Transparent
                     ),
-                    value = content,
-                    onValueChange = { content = it },
+                    value = _noteContent,
+                    onValueChange = { _noteContent = it },
                     placeholder = { Text("Your note...") },
                     singleLine = false,
                     textStyle = typography.bodyLarge,
@@ -148,9 +153,12 @@ fun AddNoteScreen(
             PadBottomSheet(
                 show = showBottomSheet,
                 state = modalBottomSheetState,
-                onDismiss = { showBottomSheet = false },
+                containerColor = _noteColor,
+                onDismiss = {
+                    showBottomSheet = false
+                    focusRequester.requestFocus() },
                 onClick = {
-                    color = it.toArgb()
+                    _noteColor = it
                 })
 
         }

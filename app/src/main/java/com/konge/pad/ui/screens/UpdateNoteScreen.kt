@@ -1,6 +1,10 @@
 package com.konge.pad.ui.screens
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -41,6 +46,7 @@ fun UpdateNoteScreen(
     noteId: Int,
     navigateBack: () -> Unit
 ) {
+
     LaunchedEffect(Unit) {
         viewModel.getNote(noteId)
     }
@@ -52,7 +58,7 @@ fun UpdateNoteScreen(
 
     Scaffold(
         topBar = {
-            PadTopBar(color = viewModel.note.color) {
+            PadTopBar(containerColor = Color(viewModel.note.color)) {
                 viewModel.updateNote(viewModel.note)
                 navigateBack()
             }

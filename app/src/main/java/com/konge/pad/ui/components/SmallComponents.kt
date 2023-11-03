@@ -1,5 +1,8 @@
 package com.konge.pad.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,8 +15,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ColorLens
+import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,8 +30,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
@@ -38,24 +41,25 @@ import com.konge.pad.data.Note
 @Composable
 fun PadTopBar(
     title: String = "",
-    color: Int,
+    containerColor: Color,
     onCLickBack: () -> Unit
 ) {
     TopAppBar(
         title = { Text(text = title) },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color(
-                ColorUtils.blendARGB(
-                    color,
-                    0x000000,
-                    0.2f
-                )
-            )
+            containerColor = containerColor
+//            containerColor = Color(
+//                ColorUtils.blendARGB(
+//                    containerColor.toArgb(),
+//                    0x000000,
+//                    0.1f
+//                )
+//            )
         ),
         navigationIcon = {
             IconButton(onClick = { onCLickBack() }) {
                 Icon(
-                    imageVector = Icons.Filled.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Localized description"
                 )
             }
@@ -65,22 +69,23 @@ fun PadTopBar(
 
 @ExperimentalMaterial3Api
 @Composable
-fun PadBottomBar(color: Int, onClickChangeColor: () -> Unit) {
+fun PadBottomBar(containerColor: Color, onClickChangeColor: () -> Unit) {
 
     BottomAppBar(
         modifier = Modifier.height(50.dp),
-        containerColor = Color(
-            ColorUtils.blendARGB(
-                color,
-                0x000000,
-                0.2f
-            )
-        ),
+        containerColor = containerColor,
+//        containerColor = Color(
+//            ColorUtils.blendARGB(
+//                containerColor.toArgb(),
+//                0x000000,
+//                0.1f
+//            )
+//        ),
         actions = {
             IconButton(onClick = {
                 onClickChangeColor()
             }) {
-                Icon(Icons.Filled.ColorLens, contentDescription = "Change color")
+                Icon(Icons.Outlined.ColorLens, contentDescription = "Change color")
             }
         }
     )
@@ -88,13 +93,21 @@ fun PadBottomBar(color: Int, onClickChangeColor: () -> Unit) {
 
 @ExperimentalMaterial3Api
 @Composable
-fun PadBottomSheet(show: Boolean, state: SheetState, onDismiss: () -> Unit, onClick: (Color) -> Unit) {
-    if (show) {
+fun PadBottomSheet(
+    show: Boolean,
+    state: SheetState,
+    containerColor: Color,
+    onDismiss: () -> Unit,
+    onClick: (Color) -> Unit
+) {
+
+    AnimatedVisibility(visible = show, enter = fadeIn(), exit = fadeOut()) {
         ModalBottomSheet(
             modifier = Modifier.height(170.dp),
             onDismissRequest = { onDismiss() },
             sheetState = state,
             dragHandle = null,
+            containerColor = containerColor
         ) {
 
             LazyRow() {
@@ -119,7 +132,6 @@ fun PadBottomSheet(show: Boolean, state: SheetState, onDismiss: () -> Unit, onCl
                 }
             }
         }
-
     }
 }
 

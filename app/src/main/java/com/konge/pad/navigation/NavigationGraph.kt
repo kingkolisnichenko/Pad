@@ -1,7 +1,10 @@
 package com.konge.pad.navigation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -19,6 +22,7 @@ import com.konge.pad.ui.screens.HomeScreen
 import com.konge.pad.ui.screens.SettingsScreen
 import com.konge.pad.ui.screens.UpdateNoteScreen
 
+@OptIn(ExperimentalAnimationApi::class)
 @ExperimentalMaterial3Api
 @Composable
 fun NavigationGraph(navController: NavHostController, drawerState: DrawerState) {
@@ -65,28 +69,16 @@ fun NavigationGraph(navController: NavHostController, drawerState: DrawerState) 
                 type = NavType.IntType
             }),
             enterTransition = {
-                slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                    animationSpec = tween(animationDuration)
-                )
+                scaleIn(initialScale = 0f)
             },
             exitTransition = {
-                slideOutOfContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Left,
-                    animationSpec = tween(animationDuration)
-                )
+                scaleOut()
             },
             popEnterTransition = {
-                slideIntoContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                    animationSpec = tween(animationDuration)
-                )
+                scaleIn()
             },
             popExitTransition = {
-                slideOutOfContainer(
-                    towards = AnimatedContentTransitionScope.SlideDirection.Companion.Right,
-                    animationSpec = tween(animationDuration)
-                )
+                scaleOut()
             }
         )
         {

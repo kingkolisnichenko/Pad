@@ -57,6 +57,8 @@ class MainActivity : ComponentActivity() {
                                     when (route) {
                                         in "${Screen.UpdateNoteScreen.route}/{${Constants.NOTE_ID}}" ->
                                             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+                                        in Screen.AddNoteScreen.route ->
+                                            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
                                         else ->
                                             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
                                     }
