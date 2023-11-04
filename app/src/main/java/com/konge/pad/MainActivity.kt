@@ -37,7 +37,6 @@ class MainActivity : ComponentActivity() {
             val navController: NavHostController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val coroutineScope = rememberCoroutineScope()
-            val contextAppCompat = LocalContext.current
 
             PadTheme {
 

@@ -1,6 +1,7 @@
 package com.konge.pad.ui.screens
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,14 +35,15 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.konge.pad.DefaultDark
+import com.konge.pad.DefaultLight
 import com.konge.pad.NoteViewModel
 import com.konge.pad.data.Note
 import com.konge.pad.ui.components.PadBottomBar
 import com.konge.pad.ui.components.PadBottomSheet
 import com.konge.pad.ui.components.PadTopBar
-import com.konge.pad.ui.theme.LightWhite
 
-@OptIn(ExperimentalComposeUiApi::class)
+
 @ExperimentalMaterial3Api
 @Composable
 fun AddNoteScreen(
@@ -53,7 +55,8 @@ fun AddNoteScreen(
 
     var _noteTitle by rememberSaveable { mutableStateOf("") }
     var _noteContent by rememberSaveable { mutableStateOf("") }
-    var _noteColor by remember { mutableStateOf(Color.White) }
+    var _noteColorLight by remember { mutableStateOf(DefaultLight) }
+    var _noteColorDark by remember { mutableStateOf(DefaultDark) }
 
     var showBottomSheet by rememberSaveable { mutableStateOf(false) }
     val modalBottomSheetState = rememberModalBottomSheetState()
@@ -67,7 +70,7 @@ fun AddNoteScreen(
             showBottomSheet = false
         } else {
             keyboard?.hide()
-            viewModel.addNote(Note(0, _noteTitle, _noteContent, false, _noteColor.toArgb()))
+            viewModel.addNote(Note(0, _noteTitle, _noteContent, false, _noteColorLight.toArgb()))
             navigateBack()
         }
     }
@@ -75,11 +78,11 @@ fun AddNoteScreen(
     Scaffold(
         modifier = Modifier
             .imePadding(),
-        containerColor = _noteColor,
+        containerColor = _noteColorLight,
         topBar = {
             PadTopBar {
                 keyboard?.hide()
-                viewModel.addNote(Note(0, _noteTitle, _noteContent, false, _noteColor.toArgb()))
+                viewModel.addNote(Note(0, _noteTitle, _noteContent, false, _noteColorLight.toArgb()))
                 navigateBack()
             }
         },
@@ -151,13 +154,13 @@ fun AddNoteScreen(
             PadBottomSheet(
                 show = showBottomSheet,
                 state = modalBottomSheetState,
-                containerColor = _noteColor,
+                containerColor = _noteColorLight,
                 onDismiss = {
                     showBottomSheet = false
                     focusRequester.requestFocus()
                 },
                 onClick = {
-                    _noteColor = it
+                    _noteColorLight = it
                 })
 
         }

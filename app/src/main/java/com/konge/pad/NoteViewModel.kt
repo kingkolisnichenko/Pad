@@ -18,7 +18,7 @@ class NoteViewModel @Inject
 constructor(
     private val repo: NoteRepository
 ) : ViewModel() {
-    var note by mutableStateOf(Note(0, "", "", false, Color.Transparent.toArgb()))
+    var note by mutableStateOf(Note(0, "", "", false, DefaultLight.toArgb()))
         private set
 
     val notes = repo.getNotesFromRoom()
@@ -55,7 +55,7 @@ constructor(
     }
     fun updateColor(color: Color) {
         note = note.copy(
-            color = color.toArgb()
+            colorLight = color.toArgb()
         )
     }
     fun updateArchive(inArchive: Boolean) {

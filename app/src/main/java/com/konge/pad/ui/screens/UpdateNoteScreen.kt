@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.konge.pad.NoteViewModel
 import com.konge.pad.data.Note
+import com.konge.pad.noteColor
 import com.konge.pad.ui.components.PadBottomBar
 import com.konge.pad.ui.components.PadBottomSheet
 import com.konge.pad.ui.components.PadTopBar
@@ -71,7 +72,7 @@ fun UpdateNoteScreen(
     val modalBottomSheetState = rememberModalBottomSheetState()
 
     Scaffold(
-        containerColor = Color(viewModel.note.color),
+        containerColor = noteColor(viewModel.note),
         topBar = {
             PadTopBar{
                 keyboard?.hide()
@@ -146,7 +147,7 @@ fun UpdateNoteScreen(
             PadBottomSheet(
                 show = showBottomSheet,
                 state = modalBottomSheetState,
-                containerColor = Color(viewModel.note.color),
+                containerColor = noteColor(viewModel.note),
                 onDismiss = {
                     showBottomSheet = false
                 },

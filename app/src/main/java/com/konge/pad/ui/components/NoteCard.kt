@@ -1,8 +1,10 @@
 package com.konge.pad.ui.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Card
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -12,13 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.konge.pad.data.Note
-import com.konge.pad.ui.theme.Typography
+import com.konge.pad.noteColor
 
 @ExperimentalMaterial3Api
 @Composable
@@ -38,7 +37,7 @@ fun NoteCard(
                 bottom = 4.dp
             )
             .fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color(note.color)),
+        colors = CardDefaults.cardColors(containerColor = noteColor(note)),
         elevation = CardDefaults.cardElevation(3.dp),
         onClick = {
             navigateToUpdateNoteScreen(note.id)

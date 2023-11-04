@@ -16,8 +16,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.outlined.ColorLens
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,10 +30,9 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.ColorUtils
-import com.konge.pad.data.Note
+import com.konge.pad.noteColors
 
 @ExperimentalMaterial3Api
 @Composable
@@ -100,6 +97,8 @@ fun PadBottomSheet(
     onClick: (Color) -> Unit
 ) {
 
+    val colors = noteColors()
+
     AnimatedVisibility(visible = show, enter = fadeIn(), exit = fadeOut()) {
         ModalBottomSheet(
             modifier = Modifier.height(170.dp),
@@ -110,7 +109,7 @@ fun PadBottomSheet(
         ) {
 
             LazyRow() {
-                items(Note.noteColors) { item ->
+                items(colors) { item ->
                     OutlinedCard(
                         modifier = Modifier
                             .size(100.dp)
@@ -134,4 +133,29 @@ fun PadBottomSheet(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+fun  Go(){
+    val colors = noteColors()
+        LazyRow(modifier = Modifier.background(Color.White)) {
+            items(colors) { item ->
+                OutlinedCard(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .padding(all = 14.dp),
+                    shape = RoundedCornerShape(size = 25.dp),
+                    border = BorderStroke(1.dp, Color.Gray)
+                ) {
 
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(item)
+                    )
+                }
+            }
+        }
+
+
+}
